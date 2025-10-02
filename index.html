@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rejoins le Groupe Futurs Millionnaires 🚀</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #fff;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 30px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 15px;
+      color: #25d366;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+
+    input[type="email"] {
+      padding: 12px;
+      width: 80%;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #25d366;
+      color: #fff;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #128c7e;
+      transform: scale(1.05);
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #ccc;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Rejoins le cercle des Futurs Millionnaires</h1>
+    <p>Entre ton e-mail ci-dessous et reçois directement le lien du groupe WhatsApp 📩</p>
+
+    <form id="joinForm">
+      <input type="email" id="email" placeholder="Votre email" required><br>
+      <button type="submit" class="btn">👉 Je rejoins le groupe</button>
+    </form>
+
+    <p id="message"></p>
+    <p class="footer">⚡ Attention : accès réservé aux personnes motivées uniquement.</p>
+  </div>
+
+  <script>
+    document.getElementById("joinForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const messageEl = document.getElementById("message");
+
+      // Appel API MailerSend
+      try {
+        const response = await fetch("https://api.mailersend.com/v1/email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer mlsn.08196e78b40103f46b4c3f231fa1ad475a532a24276218a30f39e1a9a1de2932"
+          },
+          body: JSON.stringify({
+            from: { email: "ton_email@domaine.com" }, 
+            to: [{ email: email }],
+            subject: "Lien pour rejoindre le groupe WhatsApp 🚀",
+            text: "Merci d’avoir rejoint le Cercle des Futurs Millionnaires ! Voici ton lien : https://whatsapp.com/channel/0029VbBFnvUDDmFShb548K1U",
+          })
+        });
+
+        if (response.ok) {
+          messageEl.textContent = "✅ Un email vient d’être envoyé avec ton lien !";
+          messageEl.style.color = "lightgreen";
+        } else {
+          const errorData = await response.json();
+          messageEl.textContent = "❌ Erreur : " + (errorData.message || "Impossible d’envoyer l’email");
+          messageEl.style.color = "red";
+        }
+      } catch (error) {
+        messageEl.textContent = "❌ Erreur de connexion : " + error.message;
+        messageEl.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>
